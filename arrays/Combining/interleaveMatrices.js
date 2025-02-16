@@ -5,7 +5,7 @@ function interleaveMatrices(matrixA, matrixB, submatrixCoords) {
     let startColA = submatrixCoords[0][2] -1
     let endColA = submatrixCoords[0][3] - 1
     let startRowB = submatrixCoords[1][0] -1
-    let endRoB = submatrixCoords[1][1] - 1
+    let endRowB = submatrixCoords[1][1] - 1
     let startColB = submatrixCoords[1][2] -1
     let endColB = submatrixCoords[1][3] - 1
     
