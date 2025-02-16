@@ -1,107 +1,66 @@
 function matrixBoundaryConcatenation(matrixA, matrixB, n) {
-    // TODO: Your solution
     let results = [];
-    let direction = 'right';
-    let rows = matrixA.length;
-    let cols = matrixA[0].length;
-    let row =0, col = 0;
-    let rowsB = matrixB.length;
-    let colsB = matrixB[0].length;
-    let rowB =0, colB = 0;
-    let depth = n;
-    let depthB = n;
-    
-    // Validate Depth
-    let maxDepth = Math.floor(rows/2);
-    let maxDepthB = Math.floor(rowsB/2);
-    if (n > maxDepth || n > maxDepthB) {
-        throw new Error('Invalid depth');
-    }
 
-    let visited = Array.from({length: rows}, () => Array(cols).fill(false))
-    while (depth != 0) {
-        let v = matrixA[row][col]
-        if (visited[row][col] === false) {
-            results.push(v)
-        } 
-        visited[row][col] = true
-        
-        // lets move to next cell
-        if (direction == 'right') {
-            if (col == cols -1 || visited[row][col+1]) {
-                direction = 'down';
-                row++;
-            } else {
-                col++;
+     // Validate Depth
+     let maxDepthA = Math.floor(matrixA.length/2);
+     let maxDepthB = Math.floor(matrixB.length/2);
+     if (n > maxDepthA || n > maxDepthB) {
+        throw new Error(`Invalid depth N=${n}. Maximum depth allowed is ${Math.min(maxDepthA, maxDepthB)}.`);
+     }
+
+    const traverseMatrix = (matrix, depth) => {
+        let rows = matrix.length;
+        let cols = matrix[0].length;
+        let visited = Array.from({length: rows}, () => Array(cols).fill(false))
+
+        let direction = 'right';
+        let row = 0, col = 0, dir = 0;
+        let layers = depth;
+
+        while (layers > 0) {
+            if (visited[row][col] === false) {
+                results.push(matrix[row][col]);
             }
-            
-        } else if (direction == 'down') {
-            if (row == rows -1 || visited[row+1][col]) {
-                direction = 'left'
-                col--
-            } else {
-                row++
-            }
-        } else if (direction == 'left') {
-            if (col == 0 || visited[row][col-1]) {
-                direction = 'up'
-                row--
-            } else {
-                col--
-            }
-            
-        } else if (direction == 'up') {
-            if (row == 0 || visited[row-1][col]) {
-                direction = 'right'
-                col++
-                depth--;
-            } else {
-                row--
-            }
-        }
-    }
-    let visitedB = Array.from({length: rowsB}, () => Array(colsB).fill(false))
-    while (depthB != 0) {
-        let v = matrixB[rowB][colB]
-        if (visitedB[rowB][colB] === false) {
-            results.push(v)
-        } 
-        visitedB[rowB][colB] = true
-        
-        // lets move to next cell
-        if (direction == 'right') {
-            if (colB == colsB -1 || visitedB[rowB][colB+1]) {
-                direction = 'down';
-                rowB++;
-            } else {
-                colB++;
-            }
-            
-        } else if (direction == 'down') {
-            if (rowB == rowsB -1 || visitedB[rowB+1][colB]) {
-                direction = 'left'
-                colB--
-            } else {
-                rowB++
-            }
-        } else if (direction == 'left') {
-            if (colB == 0 || visitedB[rowB][colB-1]) {
-                direction = 'up'
-                rowB--
-            } else {
-                colB--
-            }
-            
-        } else if (direction == 'up') {
-            if (rowB == 0 || visitedB[rowB-1][colB]) {
-                direction = 'right'
-                colB++
-                depthB--;
-            } else {
-                rowB--
+            visited[row][col] = true;
+
+                // lets move to next cell
+            if (direction == 'right') {
+                if (col == cols -1 || visited[row][col+1]) {
+                    direction = 'down';
+                    row++;
+                } else {
+                    col++;
+                }
+                
+            } else if (direction == 'down') {
+                if (row == rows -1 || visited[row+1][col]) {
+                    direction = 'left'
+                    col--
+                } else {
+                    row++
+                }
+            } else if (direction == 'left') {
+                if (col == 0 || visited[row][col-1]) {
+                    direction = 'up'
+                    row--
+                } else {
+                    col--
+                }
+                
+            } else if (direction == 'up') {
+                if (row == 0 || visited[row-1][col]) {
+                    direction = 'right'
+                    col++
+                    layers--;
+                } else {
+                    row--
+                }
             }
         }
     }
+    
+    traverseMatrix(matrixA, n);
+    traverseMatrix(matrixB, n);
     return results;
 }
 
