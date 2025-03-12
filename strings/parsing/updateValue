@@ -1,0 +1,29 @@
+function solution(jsonString, updateValue) {
+    // TODO: Your solution
+    let parsed = JSON.parse(jsonString)
+    
+    function updateObject(obj, key, value) {
+    if (obj.hasOwnProperty(key)) {
+        obj[key] = value;
+        return true;
+    }
+
+    for (let innerMap of Object.values(obj)) {
+        if (typeof innerMap === 'object' && innerMap !== null) {
+            if (updateObject(innerMap, key, value)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+    updateObject(parsed, 'key4', updateValue)
+    return parsed;
+}
+
+const jsonString = "{\"key1\": \"value1\", \"key2\": {\"key3\": \"value3\", \"key4\": \"value4\"}, \"key5\": \"value5\"}";
+const newValue = "newValue";
+
+const updatedObject = solution(jsonString, newValue);
+console.log(updatedObject);
